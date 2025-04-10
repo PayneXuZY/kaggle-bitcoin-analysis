@@ -1,0 +1,13 @@
+# Python
+__pycache__/
+*.pyc
+
+# Kaggle key
+kaggle.json
+
+# Data
+*.zip
+data/
+
+# IDE
+.idea/
