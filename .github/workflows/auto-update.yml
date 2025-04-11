@@ -1,0 +1,40 @@
+name: 📈 Auto Update Bitcoin Chart
+
+on:
+  workflow_dispatch:     # 允许手动触发
+  schedule:
+    - cron: '0 2 * * *'  # 每天北京时间 10:00 执行
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: 📥 Checkout repo
+      uses: actions/checkout@v3
+
+    - name: 🐍 Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: 3.10
+
+    - name: 📦 Install dependencies
+      run: |
+        pip install kaggle pandas matplotlib
+
+    - name: 🔐 Configure Kaggle API
+      run: |
+        mkdir -p ~/.kaggle
+        echo "{\"username\":\"${{ secrets.KAGGLE_USERNAME }}\",\"key\":\"${{ secrets.KAGGLE_KEY }}\"}" > ~/.kaggle/kaggle.json
+        chmod 600 ~/.kaggle/kaggle.json
+
+    - name: 📊 Run auto_plot.py
+      run: python auto_plot.py
+
+    - name: 🚀 Commit & push chart
+      run: |
+        git config user.name "github-actions[bot]"
+        git config user.email "actions@github.com"
+        git add sample_output.png
+        git commit -m "📈 Auto update chart [skip ci]" || echo "No changes"
+        git push
