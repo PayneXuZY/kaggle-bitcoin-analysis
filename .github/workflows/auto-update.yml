@@ -27,4 +27,14 @@ jobs:
         mkdir -p ~/.kaggle
         echo "{\"username\":\"${{ secrets.KAGGLE_USERNAME }}\",\"key\":\"${{ secrets.KAGGLE_KEY }}\"}" > ~/.kaggle/kaggle.json
         chmod 600 ~/.kaggle/kaggle.json
-    
+        - name: 📊 Run auto_plot.py
+
+      run: python auto_plot.py
+
+    - name: 🚀 Commit & push chart
+      run: |
+        git config user.name "github-actions[bot]"
+        git config user.email "actions@github.com"
+        git add sample_output.png
+        git commit -m "📈 Auto update chart [skip ci]" || echo "No changes to commit"
+        git push
