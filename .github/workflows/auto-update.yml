@@ -46,3 +46,4 @@ jobs:
           git add sample_output.png
           git commit -m "📈 Auto update chart [skip ci]" || echo "No changes to commit"
           git push https://x-access-token:${TOKEN}@github.com/${{ github.repository }}.git HEAD:main || echo "⚠️ Push skipped due to conflict"
+#Test#
